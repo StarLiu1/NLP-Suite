@@ -105,3 +105,6 @@ You can select the same color for different classes.",Yes,No
 file-spell-checker,Language detection,"Language detection algorithms are very slow. The NLP Suite runs three different types of algorithms: LANGDETECT, SPACY, and LANGID.
 
 Please, arm yourself with patience, depennding upon the number and size of documents processed.",Yes,Yes
+NLP,tkinter MacOS bug,"MacOS bug in tkinter (https://www.python.org/download/mac/tcltk/).
+
+Python's integrated development environment, IDLE, and the tkinter GUI toolkit it uses, depend on the Tk GUI toolkit which is not part of Python itself. For best results, it is important that the proper release of Tcl/Tk is installed on your machine. For recent Python installers for macOS downloadable from this website, here is a summary of current recommendations followed by more detailed information.",Yes,Yes
