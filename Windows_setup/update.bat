@@ -1,1 +1,0 @@
-cd %~dp0/../ && git pull -f origin
