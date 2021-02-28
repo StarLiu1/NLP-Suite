@@ -13,7 +13,7 @@ import GUI_util
 import IO_libraries_util
 import IO_user_interface_util
 
-if IO_libraries_util.install_all_packages(GUI_util.window,"file_type_converter_util",['os','__main__','tkinter','ntpath','shutil','docx','pdfminer','striprtf'])==False:
+if IO_libraries_util.install_all_packages(GUI_util.window,"file_type_converter_util",['os','__main__','tkinter','docx','pdfminer','striprtf'])==False:
     sys.exit(0)
 
 import os
@@ -28,8 +28,6 @@ from pdfminer.pdfpage import PDFPage
 from pdfminer.converter import XMLConverter, HTMLConverter, TextConverter
 from pdfminer.layout import LAParams
 from docx import Document #pip install python-docx
-import shutil
-import ntpath
 from os.path import splitext
 from striprtf.striprtf import rtf_to_text
 
@@ -157,7 +155,35 @@ def docx_converter(window,fileName,inputdirectory,outputdirectory,openOutputFile
                     textFile.write(para.text+'\n') #line of texts
     if openOutputFiles and len(fileName)>0:
         IO_files_util.openFile(window, textFilename)
-        
+
+def csv_converter(window,fileName,inputDir,outputDir,openOutputFiles):
+    if fileName!='':
+        if fileName[:2] != '~$' and fileName[-4:]=='.csv':
+            inputDocs=[fileName]
+        else:
+            tk.messagebox.showinfo("csv converter","The input file " + fileName + " is not of type csv.\n\nPlease, select a csv type file for input and try again.")
+            return
+        inputDocs=[fileName]
+    else:
+        if inputDir!='':
+            tk.messagebox.showinfo("csv converter","No input filename. The csv converter works only on a single csv file, rather than a whole directory. Please, select an input csv file and try again.")
+            return
+        else:
+            tk.messagebox.showinfo("csv converter","No input filename. Please, select an input csv file and try again.")
+            return
+        tk.messagebox.showinfo("csv converter","The function is still under construction.\n\nSorry!")
+        return
+        # TODO add a REMINDER that if they need to use some of the csv fields as filters,
+        #   they need to use first the Data manager to extract specific fields by specific values
+        #   for instance, in the csv output of the gender annotator, you may want to extract all the sentences
+        #       WHERE the gender is Male and/or Female for separate analysis
+        # TODO Check headers if Sentence is present and export sentences
+        # TODO If Document ID present, loop through all documents
+        #   ask the user if they want to export the Document (i.e., filename) adding it before each document sentence
+        #   If the values of Document ID > 1  further ask if they want to create separate files or a single merged file
+        #   Could further ask if they want to embed the filename in special symbols (e.g., <@ @>, as in <@filename@>
+        #       so that the files can also be easily split
+
 def rtf_converter(window,fileName,inputdirectory,outputdirectory,openOutputFiles):
     textFilename=''
     if len(inputdirectory)>0:
@@ -192,11 +218,12 @@ def rtf_converter(window,fileName,inputdirectory,outputdirectory,openOutputFiles
         #fileExtension = os.path.splitext(doc)[1]
         if fileExtension =="rtf":
             lines = []#list of each line in the txt files
-            with open(doc, 'r', encoding='utf-8',errors='ignore') as iptf: #read each line
-                line = iptf.readline()
-                while line: 
-                    lines.append(line)
-                    line = iptf.readline()
+            fullText = open(doc, 'r', encoding='utf-8',errors='ignore').read()
+            # https://stackoverflow.com/questions/60897366/how-to-read-rtf-file-and-convert-into-python3-strings-and-can-be-stored-in-pyth
+            # https://stackoverflow.com/questions/44580580/how-to-convert-rtf-string-to-plain-text-in-python-using-any-library
+            # https://stackoverflow.com/questions/188545/regular-expression-for-extracting-text-from-an-rtf-string/188877#188877
+            text = rtf_to_text(fullText)
+            # text=fullText
             common = os.path.commonprefix([doc, inputdirectory])
             relativePath = os.path.relpath(doc, common)
             textFilename = os.path.join(outputdirectory, os.path.splitext(relativePath)[0] + ".txt")
@@ -208,8 +235,7 @@ def rtf_converter(window,fileName,inputdirectory,outputdirectory,openOutputFiles
                     if exc.errno != errno.EEXIST:
                         raise
             with open(textFilename,"w", encoding="utf-8",errors='ignore') as textFile:
-                for l in lines:
-                    textFile.write(l+'\n') #line of texts
+                textFile.write(text)
     if openOutputFiles and len(fileName)>0:
         IO_files_util.openFile(window, textFilename)
     

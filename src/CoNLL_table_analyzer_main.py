@@ -239,7 +239,8 @@ def run(inputFilename,outputDir,openOutputFiles,createExcelCharts,
 			errorFound=IO_csv_util.list_to_csv(GUI_util.window,column_stats,output_file_name_xlsx)
 			if errorFound==True:
 				return
-			Excel_util.create_excel_chart(GUI_util.window,[column_stats],output_file_name_xlsx,"Searched token Postag Values (" + searchField_kw + ")",["pie"])
+
+			output_file_name_xlsx=Excel_util.create_excel_chart(GUI_util.window,[column_stats],inputFilename, outputDir,"QueryCoNLL_POS","Searched token POStag Values (" + searchField_kw + ")",["pie"])
 			filesToOpen.append(output_file_name_xlsx)
 
 			output_file_name_xlsx=IO_files_util.generate_output_file_name(inputFilename, '', outputDir, '.xlsx', 'QC', 'kw_deprel', 'stats_pie_chart')
@@ -247,7 +248,7 @@ def run(inputFilename,outputDir,openOutputFiles,createExcelCharts,
 			errorFound=IO_csv_util.list_to_csv(GUI_util.window,column_stats,output_file_name_xlsx)
 			if errorFound==True:
 				return
-			Excel_util.create_excel_chart(GUI_util.window,[column_stats],output_file_name_xlsx,"Searched token Deprel Values (" + searchField_kw + ")",["pie"])
+			output_file_name_xlsx=Excel_util.create_excel_chart(GUI_util.window,[column_stats],inputFilename, outputDir,"QueryCoNLL_DepRel","Searched token DEPrel Values (" + searchField_kw + ")",["pie"])
 			filesToOpen.append(output_file_name_xlsx)
 
 			output_file_name_xlsx=IO_files_util.generate_output_file_name(inputFilename, '', outputDir, '.xlsx', 'QC', 'co_kw_postag', 'stats_pie_chart')
@@ -255,7 +256,7 @@ def run(inputFilename,outputDir,openOutputFiles,createExcelCharts,
 			errorFound=IO_csv_util.list_to_csv(GUI_util.window,column_stats,output_file_name_xlsx)
 			if errorFound==True:
 				return
-			Excel_util.create_excel_chart(GUI_util.window,[column_stats],output_file_name_xlsx,"Co-token Postag Values (" + searchField_kw + ")",["pie"])
+			output_file_name_xlsx=Excel_util.create_excel_chart(GUI_util.window,[column_stats],inputFilename, outputDir,"QueryCoNLL_CoOcc_POS","Co-token POStag Values (" + searchField_kw + ")",["pie"])
 			filesToOpen.append(output_file_name_xlsx)
 
 			output_file_name_xlsx=IO_files_util.generate_output_file_name(inputFilename, '', outputDir, '.xlsx', 'QC', 'co_kw_deprel', 'stats_pie_chart')
@@ -263,7 +264,8 @@ def run(inputFilename,outputDir,openOutputFiles,createExcelCharts,
 			errorFound=IO_csv_util.list_to_csv(GUI_util.window,column_stats,output_file_name_xlsx)
 			if errorFound==True:
 				return
-			Excel_util.create_excel_chart(GUI_util.window,[column_stats],output_file_name_xlsx,"Co-token Deprel Values (" + searchField_kw + ")",["pie"])
+
+			output_file_name_xlsx=Excel_util.create_excel_chart(GUI_util.window,[column_stats],inputFilename, outputDir,"QueryCoNLL_CoOcc_DEP","Co-token DEPrel Values (" + searchField_kw + ")",["pie"])
 			filesToOpen.append(output_file_name_xlsx)
 			IO_user_interface_util.timed_alert(GUI_util.window, 3000, 'Analysis end', 'Finished running CoNLL search at',True)
 
@@ -556,8 +558,8 @@ noun_analysis_var.trace('w',activate_CoNLL_options)
 verb_analysis_var.trace('w',activate_CoNLL_options)
 function_words_analysis_var.trace('w',activate_CoNLL_options)
 
-TIPS_lookup = {'CoNLL Table': "TIPS_NLP_Stanford CoreNLP CoNLL table.pdf", 'POSTAG (Part of Speech Tags)': "TIPS_NLP_POSTAG (Part of Speech Tags) Stanford CoreNLP.pdf", 'DEPREL (Stanford Dependency Relations)': "TIPS_NLP_DEPREL (Dependency Relations) Stanford CoreNLP.pdf", 'NLP Searches': "TIPS_NLP_NLP Searches.pdf",'Excel Charts':'TIPS_NLP_Excel Charts.pdf','Excel Enabling Macros':'TIPS_NLP_Excel Enabling macros.pdf','Network Graphs (via Gephi)':'TIPS_NLP_Gephi network graphs.pdf'}
-TIPS_options='CoNLL Table', 'POSTAG (Part of Speech Tags)', 'DEPREL (Stanford Dependency Relations)','NLP Searches','Excel Charts','Excel Enabling Macros','Network Graphs (via Gephi)'
+TIPS_lookup = {'CoNLL Table': "TIPS_NLP_Stanford CoreNLP CoNLL table.pdf", 'POSTAG (Part of Speech Tags)': "TIPS_NLP_POSTAG (Part of Speech Tags) Stanford CoreNLP.pdf", 'DEPREL (Stanford Dependency Relations)': "TIPS_NLP_DEPREL (Dependency Relations) Stanford CoreNLP.pdf", 'English Language Benchmarks':'TIPS_NLP_English Language Benchmarks.pdf','Style Analysis':'TIPS_NLP_Style Analysis.pdf','Clause Analysis':'TIPS_NLP_Clause Analysis.pdf','Noun Analysis':'TIPS_NLP_Noun Analysis.pdf','Verb Analysis':'TIPS_NLP_Verb Analysis.pdf','Function Words Analysis':'TIPS_NLP_Function Words Analysis.pdf','Nominalization':'TIPS_NLP_Nominalization.pdf','NLP Searches': "TIPS_NLP_NLP Searches.pdf",'Excel Charts':'TIPS_NLP_Excel Charts.pdf','Excel Enabling Macros':'TIPS_NLP_Excel Enabling macros.pdf','Network Graphs (via Gephi)':'TIPS_NLP_Gephi network graphs.pdf'}
+TIPS_options='CoNLL Table', 'POSTAG (Part of Speech Tags)', 'DEPREL (Stanford Dependency Relations)','English Language Benchmarks','Style Analysis','Clause Analysis','Noun Analysis','Verb Analysis','Function Words Analysis','Nominalization','NLP Searches','Excel Charts','Excel Enabling Macros','Network Graphs (via Gephi)'
 
 # add all the lines lines to the end to every special GUI
 # change the last item (message displayed) of each line of the function help_buttons
