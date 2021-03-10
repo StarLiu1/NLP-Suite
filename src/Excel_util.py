@@ -51,6 +51,8 @@ def prepare_data_to_be_plotted(inputFilename, columns_to_be_plotted, chart_type_
                                count_var=0, column_yAxis_field_list = []):
     withHeader_var = IO_csv_util.csvFile_has_header(inputFilename) # check if the file has header
     data, headers = IO_csv_util.get_csv_data(inputFilename,withHeader_var) # get the data and header
+    if len(data)==0:
+        return None
     headers=list(headers)
     count_msg, withHeader_msg = build_timed_alert_message(chart_type_list[0],withHeader_var,count_var)
     if count_var == 1:
@@ -175,7 +177,7 @@ def get_hover_column_numbers(withHeader_var,headers,hover_info_column_list):
     return hover_column_numbers
 
 
-# split the pairs of gui x y values into two seperate lists of x axis values and y axis value
+# split the pairs of gui x y values into two separate lists of x axis values and y axis value
 def get_xaxis_yaxis_values(columns_to_be_plotted):
     x = [a[0] for a in columns_to_be_plotted] # select all the x axis number and put them in a list
     y = [a[1] for a in columns_to_be_plotted] # select all the y axis number and put them in a list

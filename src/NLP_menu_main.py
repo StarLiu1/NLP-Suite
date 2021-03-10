@@ -163,10 +163,7 @@ pydict["Annotator - quote (via CoreNLP)"] = ["Stanford_CoreNLP_main.py", 1]
 pydict["Annotator - dictionary, gender, DBpedia, YAGO"] = ["annotator_main.py", 1]
 pydict["Annotator - hedge/uncertainty"] = ["", 0]
 pydict["CoNLL table analyzer - Search the CoNLL table"] = ["CoNLL_table_analyzer_main.py", 1]
-pydict["CoNLL table analyzer - Clause analysis"] = ["CoNLL_table_analyzer_main.py", 1]
-pydict["CoNLL table analyzer - Function words analysis"] = ["CoNLL_table_analyzer_main.py", 1]
-pydict["CoNLL table analyzer - Noun analysis"] = ["CoNLL_table_analyzer_main.py", 1]
-pydict["CoNLL table analyzer - Verb analysis"] = ["CoNLL_table_analyzer_main.py", 1]
+pydict["CoNLL table analyzer - Clause, noun, verb, function words frequencies"] = ["CoNLL_table_analyzer_main.py", 1]
 pydict["Statistics (csv & txt files)"] = ["statistics_NLP_main.py", 1]
 pydict["Co-Reference PRONOMINAL resolution (via Stanford CoreNLP)"] = ["Stanford_CoreNLP_main.py", 1]
 pydict["Co-Occurrences viewer"] = ["NGrams_CoOccurrences_Viewer_main.py", 1]
@@ -174,7 +171,7 @@ pydict["Data manager (csv files via Pandas)"] = ["data_manager_main.py", 1]
 pydict["File checker (file content)"] = ["file_checker_converter_cleaner_main.py", 1]
 pydict["File checker (file content utf-8 encoding)"] = ["file_checker_converter_cleaner_main.py", 1]
 pydict["File checker (file name)"] = ["file_manager_main.py", 1]
-pydict["File cleaner (Change to utf-8 non utf-8 apostrophes & quotes)"] = ["file_checker_converter_cleaner_main.py", 1]
+pydict["File cleaner (Change to ASCII non-ASCII apostrophes & quotes and % to percent)"] = ["file_checker_converter_cleaner_main.py", 1]
 pydict["File cleaner (Find & Replace string)"] = ["file_checker_converter_cleaner_main.py", 1]
 pydict["File cleaner (Remove blank lines from txt file(s))"] = ["file_checker_converter_cleaner_main.py", 1]
 pydict["File classifier (dumb classifier via embedded date) (file name)"] = ["file_filename_checker_main.py", 1]
@@ -188,7 +185,9 @@ pydict["File manager (List, Rename, Copy, Move, Delete, Count)"] = ["file_manage
 pydict["Find non-related documents"] = ["social_science_research_main.py", 1]
 pydict["Excel charts"] = ["Excel_charts_main.py", 1]
 pydict["Network graphs (Gephi)"] = ["", 0]  # not available
-pydict["Geographic maps (geocoding & maps)"] = ["GIS_main.py", 1]
+pydict["Geographic maps: Geocoding & maps"] = ["GIS_main.py", 1]
+pydict["Geographic maps: Google Earth Pro"] = ["GIS_Google_Earth_main.py", 1]
+pydict["Geographic maps: From texts to maps"] = ["GIS_main.py", 1]
 pydict["Geographic distances between locations"] = ["", 0]  # GIS_distance_main.py
 pydict["Gender guesser"] = ["Gender guesser", 0, 0, '']
 pydict["Language detection"] = ["style_analysis_main.py", 1]
@@ -276,7 +275,7 @@ pre_processing_menu = tk.OptionMenu(window, pre_processing_tools_var,
                                     'File checker (file content)',
                                     'File checker (file content utf-8 encoding)',
                                     'File checker (file name)',
-                                    'File cleaner (Change to utf-8 non utf-8 apostrophes & quotes)',
+                                    'File cleaner (Change to ASCII non-ASCII apostrophes & quotes and % to percent)',
                                     'File cleaner (Find & Replace string)',
                                     'File cleaner (Remove blank lines from txt file(s))',
                                     'File finder (file name)',
@@ -321,7 +320,8 @@ y_multiplier_integer = GUI_IO_util.placeWidget(GUI_IO_util.get_labels_x_coordina
                                                visualization_lb, True)
 visualization_menu = tk.OptionMenu(window, visualization_tools_var,
                                    'Excel charts',
-                                   'Geographic maps (geocoding & maps)',
+                                   'Geographic maps: Geocoding & maps',
+                                   'Geographic maps: Google Earth Pro',
                                    'Geographic distances between locations',
                                    'Annotator - dictionary, gender, DBpedia, YAGO',
                                    'Network graphs (Gephi)',
@@ -373,9 +373,7 @@ y_multiplier_integer = GUI_IO_util.placeWidget(GUI_IO_util.get_labels_x_coordina
 corpus_document_tools_menu = tk.OptionMenu(window, corpus_document_tools_var,
                                            'Stanford CoreNLP',
                                            'CoNLL table analyzer - Search the CoNLL table',
-                                           'CoNLL table analyzer - Clause analysis',
-                                           'CoNLL table analyzer - Noun analysis',
-                                           'CoNLL table analyzer - Verb analysis',
+                                           'CoNLL table analyzer - Clause, noun, verb, function words frequencies',
                                            'Annotator - date (NER normalized date, via CoreNLP)',
                                            'Annotator - gender (male & female names; via CoreNLP and dictionaries)',
                                            'Annotator - quote (via CoreNLP)',
@@ -386,6 +384,8 @@ corpus_document_tools_menu = tk.OptionMenu(window, corpus_document_tools_var,
                                            'Style analysis',
                                            'Sentiment analysis',
                                            'Gender guesser',
+                                           'Geographic maps: From texts to maps',
+                                           'Geographic maps: Google Earth Pro',
                                            'NER (Named Entity Recognition) extractor',
                                            'N-grams (word & character)',
                                            'Nominalization',
@@ -463,8 +463,9 @@ TIPS_lookup = {'NLP Suite: Package description': 'TIPS_NLP_NLP Suite Package des
                'Things to do with words: Narrative analysis': 'TIPS_NLP_Things to do with words Narrative analysis.pdf',
                'Things to do with words: Rhetoric (Arguments)': 'TIPS_NLP_Things to do with words Rhetorical analysis Arguments.pdf',
                'Things to do with words: Rhetoric (Tropes & Figures)': 'TIPS_NLP_Things to do with words Rhetorical analysis Tropes and Figures.pdf',
-               'Style analysis': 'TIPS_NLP_Style analysis.pdf'}
-TIPS_options = 'NLP Suite: Package description', 'Things to do with words: NLP approach', 'NLP Suite: General tools', 'NLP Suite: Tools of linguistic analysis', 'NLP basic language', 'Things to do with words: Overall view', 'Things to do with words: Content analysis', 'Things to do with words: Frame analysis', 'Things to do with words: Narrative analysis', 'Things to do with words: Rhetoric (Arguments)', 'Things to do with words: Rhetoric (Tropes & Figures)', 'Style analysis'
+               'Style analysis': 'TIPS_NLP_Style analysis.pdf',
+               'Text encoding (utf-8)': 'TIPS_NLP_Text encoding (utf-8).pdf'}
+TIPS_options = 'NLP Suite: Package description', 'Things to do with words: NLP approach', 'NLP Suite: General tools', 'NLP Suite: Tools of linguistic analysis', 'NLP basic language', 'Things to do with words: Overall view', 'Things to do with words: Content analysis', 'Things to do with words: Frame analysis', 'Things to do with words: Narrative analysis', 'Things to do with words: Rhetoric (Arguments)', 'Things to do with words: Rhetoric (Tropes & Figures)', 'Style analysis', 'Text encoding (utf-8)'
 
 
 # reminders content for specific GUIs are set in the csv file reminders

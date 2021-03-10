@@ -62,14 +62,29 @@ def process_CoreNLP_error(window, CoreNLP_output, inputFilename, nDocs, filesErr
     silent = False
     duration = 1000
     head, tail = os.path.split(inputFilename)
+    error=None
     if isinstance(CoreNLP_output, str):
          logger.warning("[Warning] Stanford CoreNLP is not JSON. Trying to convert output to JSON.. ")
          try:
              CoreNLP_output = json.loads(CoreNLP_output)
              logger.warning("[Info] Successfully converted CoreNLP output to JSON. Proceeding as normal.")
          except Exception as e:
-            logger.error("[Error] Could not convert output to JSON!")
+            logger.error("[Error] Could not convert output to JSON! Error: " + str(e))
             errorFound = True
+            error = str(e)
+    # OutOfMemoryError Java heap space
+    # this error may occur with Java JDK version > 8. Rge heap memoryy size is set tpo 32 bits by default instead of 64, leading to this error.
+    # for memory errors and solutions https://stackoverflow.com/questions/40832022/outofmemoryerror-when-running-the-corenlp-tool
+    # You can use Java8. They use metaspace for heap. So, no heap space error will occur.
+    # see also
+    # https://stackoverflow.com/questions/909018/avoiding-initial-memory-heap-size-error
+
+    # need to add -d64 to the Java call (e.g., ['java', '-mx' + str(memory_var) + "g", '-d64', '-cp', os.path.join(CoreNLPdir, '*'),
+    #          'edu.stanford.nlp.pipeline.StanfordCoreNLPServer', '-timeout', '999999'])
+    # TODO % will break the code
+    # The reasons are explained here: https://docs.oracle.com/javase/8/docs/api/java/net/URLDecoder.html
+    #   The character "%" is allowed but is interpreted as the start of a special escaped sequence.
+    # Needs special handling https://stackoverflow.com/questions/6067673/urldecoder-illegal-hex-characters-in-escape-pattern-for-input-string
     if errorFound:
         if len(filesError) > 2:
             silent = True
@@ -85,11 +100,11 @@ def process_CoreNLP_error(window, CoreNLP_output, inputFilename, nDocs, filesErr
         msgPrint = "Stanford CoreNLP failed to process your document " + tail
         # + '\nexiting with the following error:\n\n' + CoreNLP_output + '\n\nTHE ERROR MAY HAPPEN WHEN CoreNLP HANGS. REBOOT YOUR MACHINE AND TRY AGAIN.\n\nTHE ERROR IS ALSO LIKELY TO HAPPEN WHEN THE STANFORD CORENLP HAS BEEN STORED TO A CLOUD SERVICE (e.g., OneDrive) OR INSIDE THE /NLP/src DIRECTORY. TRY TO MOVE THE STANFORD CORENLP FOLDER TO A DIFFERENT LOCATION.
         if nDocs > 1:
-            msg = msg + "Processing will continue with the next file."
+            msg = msg + " Processing will continue with the next file."
             msgPrint += " Processing will continue with the next file."
         # mb.showwarning("Stanford CoreNLP Error", msg)
         if not silent:
             timed_alert(window, duration, 'Stanford CoreNLP error', msg)
         print("\n\n" + msgPrint)
-        filesError.append([len(filesError), inputFilename, str(CoreNLP_output)])
+        filesError.append([len(filesError), inputFilename, str(CoreNLP_output) + " " + str(error)])
     return errorFound, filesError, CoreNLP_output
